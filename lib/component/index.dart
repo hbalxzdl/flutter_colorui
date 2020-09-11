@@ -148,7 +148,7 @@ class _ComponentState extends State<Component> {
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                         child: new Text(
-                          '头部展开/折叠',
+                          '头部AppBar',
                           style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
                       ),

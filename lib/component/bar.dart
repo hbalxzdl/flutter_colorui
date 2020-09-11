@@ -259,9 +259,7 @@ class _BarState extends State<Bar> {
                       ),
                     ),
 
-                    new Container(
-
-                    )
+                    new Container()
 
                   ],
                 ))),
@@ -275,6 +273,7 @@ class _BarState extends State<Bar> {
         ),
         floatingActionButtonLocation:FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar:BottomNavigationBar(
+
             onTap: (index){
               if(index==2) {
                 return;
