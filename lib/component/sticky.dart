@@ -26,6 +26,7 @@ class _StickyState extends State<Sticky>
             pinned: true,
             snap: false,
             elevation: 0,
+            backgroundColor: Colors.red,
             expandedHeight: 250,
             flexibleSpace: FlexibleSpaceBar(
               title: Text('Sliver-sticky吸顶效果'),
