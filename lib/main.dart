@@ -5,6 +5,7 @@ import 'about/index.dart';
 import 'plugin/index.dart';
 import 'index/index.dart';
 import 'router/index.dart';
+import 'package:oktoast/oktoast.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,17 +13,21 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        //设置成同样的颜色水波纹就没有了
-        highlightColor: Colors.transparent,
-        splashColor:  Colors.transparent,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    return OKToast(
+      child:MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          //设置成同样的颜色水波纹就没有了
+          highlightColor: Colors.transparent,
+          splashColor:  Colors.transparent,
+        ),
+        home: MyHomePage(title: 'Flutter Demo Home Page'),
 
+      ),
     );
+
+
   }
 }
 
