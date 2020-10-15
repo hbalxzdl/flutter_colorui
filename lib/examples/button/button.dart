@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,19 +10,20 @@ enum Size { normal, large, small, mini }
 class Button extends StatefulWidget {
   Button(
       {Key key,
-      this.text,
+        this.text,
       this.icon,
-      this.color,
+      this.color=0xff323233,
       this.round = false,
-      this.plain = false,
+      this.plain = true,
       this.disabled = false,
       this.loading = false,
       this.loadingType = 'circular',
       this.size = Size.normal,
+        this.block=false,
       this.height = 40})
       : super(key: key);
 
-  final String text; //按钮文字
+  final Text text; //按钮文字
   final Icon icon; //左侧图标名称
   final int color; //按钮颜色
   final bool round; //是否为圆形按钮
@@ -30,6 +32,7 @@ class Button extends StatefulWidget {
   final bool loading; //是否显示为加载状态
   final String loadingType;
   final double height; //按钮高度
+  final bool block;
   final size;
 
   @override
@@ -45,8 +48,16 @@ class _ButtonState extends State<Button> {
     // TODO: implement initState
     super.initState();
 
-
   }
+
+
+
+  int get borderColor=>widget.color==0xff323233?0xffdadde0:widget.color;
+
+  int get bgColor=>widget.plain? 0x00000000:widget.color;
+
+  double get roundSize=>widget.round? 24.0 : 4;
+
 
 
   @override
@@ -54,6 +65,7 @@ class _ButtonState extends State<Button> {
     final ThemeData theme = Theme.of(context);
 
     Widget _loadingWidget=Text('');
+
     if (widget.loading) {
       switch (widget.loadingType) {
         case 'circular':
@@ -82,51 +94,90 @@ class _ButtonState extends State<Button> {
           break;
       }
     }
+    print(widget.round);
+    return Container(
+      child: Row(
+        children: [
 
-    print(_loadingWidget);
-    return Row(
-      children: [
-        Container(
-          height:48,
-          decoration:BoxDecoration(
-              color:Color(widget.plain ? 0xffffffff : widget.color),
-              borderRadius: BorderRadius.all(Radius.circular(widget.round ? 24.0 : 4))),
-          child: MaterialButton(
-              minWidth: 0,
-              elevation:0, //阴影
-              padding: EdgeInsets.only(left: 8,right: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  widget.icon == null ? Text('') : widget.icon,
-                  _loadingWidget,
-                  Text(
-                    widget.text,
-                    style: TextStyle(
-                      //为plain时，文字颜色要变
-                      color: Color(widget.plain ? widget.color : 0xffffffff),
-                      fontSize: 14,
-                    ),
-                  )
-                ],
-              ),
-              //如果是
-              // color: Color(widget.plain ? 0xffffffff : widget.color),
-              shape: RoundedRectangleBorder(
+          // Expanded(
+          //   child: Container(
+          //     height:widget.height,
+          //     // width: double.infinity,
+          //     decoration:BoxDecoration(
+          //         color:Color(bgColor),
+          //         borderRadius: BorderRadius.all(Radius.circular(roundSize))
+          //     ),
+          //     child: MaterialButton(
+          //       // minWidth: 0,
+          //       // minWidth: double.infinity,
+          //         height: 0,
+          //         elevation:0, //阴影
+          //         color: Color(bgColor),
+          //         padding: EdgeInsets.only(left: 10,right: 10),
+          //         child: Row(
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           children: [
+          //             widget.icon == null ? Text('') : widget.icon,
+          //             _loadingWidget,
+          //             widget.text == null ? Text('') : widget.text,
+          //           ],
+          //         ),
+          //         //如果是
+          //         // color: Color(widget.plain ? 0xffffffff : widget.color),
+          //         shape: RoundedRectangleBorder(
+          //           //为plain时，边框颜色和字体颜色保持一致
+          //             borderRadius:
+          //             BorderRadius.all(Radius.circular(roundSize)),
+          //             side:
+          //             BorderSide(color: Color(borderColor), width: .5)),
+          //         disabledColor: widget.disabled
+          //             ? ColorsUtil.hexColor(widget.color, alpha: .5)
+          //             : null,
+          //
+          //         //
+          //         onPressed: widget.disabled || widget.loading ? null : () {}),
+          //   ),
+          // ):
+
+          Container(
+            height:widget.height,
+            // width: double.infinity,
+            decoration:BoxDecoration(
+                color:Color(bgColor),
+                borderRadius: BorderRadius.all(Radius.circular(roundSize))
+            ),
+            child: MaterialButton(
+              // minWidth: 0,
+              // minWidth: double.infinity,
+                height: 0,
+                elevation:0, //阴影
+                color: Color(bgColor),
+                padding: EdgeInsets.only(left: 10,right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    widget.icon == null ? Text('') : widget.icon,
+                    _loadingWidget,
+                    widget.text == null ? Text('') : widget.text,
+                  ],
+                ),
+                //如果是
+                // color: Color(widget.plain ? 0xffffffff : widget.color),
+                shape: RoundedRectangleBorder(
                   //为plain时，边框颜色和字体颜色保持一致
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(widget.round ? 20.0 : 4)),
-                  side: widget.disabled
-                      ? BorderSide.none
-                      : BorderSide(color: Color(widget.color), width: .5)),
-              disabledColor: widget.disabled
-                  ? ColorsUtil.hexColor(widget.color, alpha: .5)
-                  : null,
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(roundSize)),
+                    side:
+                    BorderSide(color: Color(borderColor), width: .5)),
+                disabledColor: widget.disabled
+                    ? ColorsUtil.hexColor(widget.color, alpha: .5)
+                    : null,
 
-              //
-              onPressed: widget.disabled || widget.loading ? null : () {}),
-        ),
-      ],
+                //
+                onPressed: widget.disabled || widget.loading ? null : () {}),
+          ),
+        ],
+      ),
     );
   }
 }
