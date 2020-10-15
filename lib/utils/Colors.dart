@@ -5,6 +5,17 @@ class ColorsUtil {
   /// hex, 十六进制值，例如：0xffffff,
   /// alpha, 透明度 [0.0,1.0]
   ///
+  ///
+
+  Color def=Color(0xffffffff);
+
+  Color white=Color(0xffffffff);
+
+  Color red=Color(0xffee0a24);
+
+  Color green=Color(0xff07c160);
+
+  // Color(ColorsUtil().white))
 
 
   static Color hexColor(int hex,{double alpha = 1}){
