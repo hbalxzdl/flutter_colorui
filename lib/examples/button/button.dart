@@ -16,7 +16,7 @@ class Button extends StatefulWidget {
       this.plain = false,
       this.disabled = false,
       this.loading = false,
-      this.loadingType = LoadingType.circular,
+      this.loadingType = 'circular',
       this.size = Size.normal,
       this.height = 40})
       : super(key: key);
@@ -28,7 +28,7 @@ class Button extends StatefulWidget {
   final bool plain; //是否为朴素按钮
   final bool disabled; //是否禁用按钮
   final bool loading; //是否显示为加载状态
-  final loadingType;
+  final String loadingType;
   final double height; //按钮高度
   final size;
 
@@ -37,25 +37,34 @@ class Button extends StatefulWidget {
 }
 
 class _ButtonState extends State<Button> {
-  Widget loadingWidget = Text('');
+
   Map<String, double> size = {'width': 58.0, 'height': 54.0};
 
   @override
-  // TODO: implement widget
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    Widget _loadingWidget=Text('');
     if (widget.loading) {
       switch (widget.loadingType) {
-        case LoadingType.circular:
-          loadingWidget = Container(
+        case 'circular':
+          _loadingWidget = Container(
             height: Theme.of(context).textTheme.headline4.fontSize / 2,
             width: Theme.of(context).textTheme.headline4.fontSize / 2,
             margin: EdgeInsets.only(right: 5),
             child: CircularProgressIndicator(
-              value: 1,
+              value: null,
               //用来表示进度多少
-              backgroundColor: Colors.transparent,
+              backgroundColor:widget.plain ? Color( widget.color) : Colors.transparent,
               //背景颜色
               valueColor: new AlwaysStoppedAnimation<Color>(Color(0xffffffff)),
               //进度颜色
@@ -63,8 +72,8 @@ class _ButtonState extends State<Button> {
             ),
           );
           break;
-        case LoadingType.spinner:
-          loadingWidget = Container(
+        case 'spinner':
+          _loadingWidget = Container(
             height: Theme.of(context).textTheme.headline4.fontSize / 2,
             width: Theme.of(context).textTheme.headline4.fontSize / 2,
             margin: EdgeInsets.only(right: 5),
@@ -74,26 +83,23 @@ class _ButtonState extends State<Button> {
       }
     }
 
-    // witch (widget.size){
-    //
-    // }
-
-    print(widget.round);
-
+    print(_loadingWidget);
     return Row(
       children: [
         Container(
-
+          height:48,
+          decoration:BoxDecoration(
+              color:Color(widget.plain ? 0xffffffff : widget.color),
+              borderRadius: BorderRadius.all(Radius.circular(widget.round ? 24.0 : 4))),
           child: MaterialButton(
               minWidth: 0,
-              height:24,
-              padding: EdgeInsets.only(left: 4,right: 4),
-
+              elevation:0, //阴影
+              padding: EdgeInsets.only(left: 8,right: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   widget.icon == null ? Text('') : widget.icon,
-                  loadingWidget,
+                  _loadingWidget,
                   Text(
                     widget.text,
                     style: TextStyle(
@@ -105,7 +111,7 @@ class _ButtonState extends State<Button> {
                 ],
               ),
               //如果是
-              color: Color(widget.plain ? widget.color : widget.color),
+              // color: Color(widget.plain ? 0xffffffff : widget.color),
               shape: RoundedRectangleBorder(
                   //为plain时，边框颜色和字体颜色保持一致
                   borderRadius:
