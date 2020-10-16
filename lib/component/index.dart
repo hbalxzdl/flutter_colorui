@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../examples/button/button.dart';
+
 import './bar.dart';
 import './nav.dart';
 import './toast.dart';
@@ -38,6 +40,15 @@ class _ComponentState extends State<Component> {
                   spacing: 12.0,
                   alignment: WrapAlignment.center,
                   children: <Widget>[
+                    new GestureDetector(
+                      onTap: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) => ButtonDemo()));
+                      },
+                      child: BaseText(text: '按钮'),
+                    ),
+
+
                     //操作条
                     new GestureDetector(
                       onTap: () {
@@ -228,6 +239,31 @@ class _ComponentState extends State<Component> {
             ],
           ),
         )
+      ),
+    );
+  }
+}
+
+
+class BaseText extends StatelessWidget {
+  BaseText({
+    Key key,
+    this.text,
+  }) : super(key: key);
+
+  final String text;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 150,
+      height: 90,
+      decoration: new BoxDecoration(
+        color: Color(0xff39b54a),
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      child: new Text(
+        text,
+        style: TextStyle(color: Colors.white, fontSize: 20),
       ),
     );
   }
